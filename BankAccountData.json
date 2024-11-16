@@ -1,0 +1,90 @@
+{
+  "Customers": [
+    {
+      "Id": 101,
+      "Name": "Alice Johnson",
+      "Address": "123 Elm Street",
+      "AccountIDs": []
+    },
+    {
+      "Id": 102,
+      "Name": "Bob Smith",
+      "Address": "456 Oak Avenue",
+      "AccountIDs": []
+    },
+    {
+      "Id": 103,
+      "Name": "Charlie Brown",
+      "Address": "789 Pine Lane",
+      "AccountIDs": []
+    }
+  ],
+  "Accounts": [
+    {
+      "Id": 1,
+      "CustomerId": 101,
+      "AccountType": "SavingAccount",
+      "Balance": 10000.00,
+      "Transactions": [
+        {
+          "TransactionId": 1,
+          "Amount": 500.00,
+          "Date": "2024-01-10T00:00:00",
+          "Type": "Deposit"
+        },
+        {
+          "TransactionId": 2,
+          "Amount": 200.00,
+          "Date": "2024-01-15T00:00:00",
+          "Type": "Withdrawal"
+        },
+        {
+          "TransactionId": 3,
+          "Amount": 5000,
+          "Date": "2024-11-16T21:18:35.454285+01:00",
+          "Type": "Deposit"
+        }
+      ]
+    },
+    {
+      "Id": 2,
+      "CustomerId": 102,
+      "AccountType": "PersonalAccount",
+      "Balance": 1500.00,
+      "Transactions": [
+        {
+          "TransactionId": 3,
+          "Amount": 1000.00,
+          "Date": "2024-01-20T00:00:00",
+          "Type": "Deposit"
+        },
+        {
+          "TransactionId": 4,
+          "Amount": 250.00,
+          "Date": "2024-01-25T00:00:00",
+          "Type": "Withdrawal"
+        }
+      ]
+    },
+    {
+      "Id": 3,
+      "CustomerId": 103,
+      "AccountType": "InvestmentAccount",
+      "Balance": 20000.00,
+      "Transactions": [
+        {
+          "TransactionId": 5,
+          "Amount": 5000.00,
+          "Date": "2024-02-01T00:00:00",
+          "Type": "Deposit"
+        },
+        {
+          "TransactionId": 6,
+          "Amount": 1000.00,
+          "Date": "2024-02-10T00:00:00",
+          "Type": "Withdrawal"
+        }
+      ]
+    }
+  ]
+}
