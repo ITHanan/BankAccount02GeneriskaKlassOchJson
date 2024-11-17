@@ -89,30 +89,6 @@
       "AccountIDs": []
     },
     {
-      "Id": 102,
-      "Name": "Bob Smith",
-      "Address": "456 Oak Avenue",
-      "AccountIDs": []
-    },
-    {
-      "Id": 103,
-      "Name": "Charlie Brown",
-      "Address": "789 Pine Lane",
-      "AccountIDs": []
-    },
-    {
-      "Id": 4,
-      "Name": "Sara Soso",
-      "Address": "Askim",
-      "AccountIDs": []
-    },
-    {
-      "Id": 5,
-      "Name": "siri",
-      "Address": "abc",
-      "AccountIDs": []
-    },
-    {
       "Id": 6,
       "Name": "Hanan",
       "Address": "frolonda",

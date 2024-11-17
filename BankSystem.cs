@@ -1,11 +1,7 @@
 ﻿
 
 using Spectre.Console;
-using System.Data;
 using System.Text.Json;
-using System.Xml.Linq;
-using Spectre.Console;
-using Figgle;
 
 namespace BankAccount02GeneriskaKlassOchJson
 {
@@ -19,7 +15,7 @@ namespace BankAccount02GeneriskaKlassOchJson
         {
             var customerAdmin = new BankGeneriskAdministration<Customer>();
 
-            foreach (var c in bankDB.AllCustomersDatafromBankDB) 
+            foreach (var c in bankDB.AllCustomersDatafromBankDB)
             {
 
                 customerAdmin.AddTo(c);
@@ -33,15 +29,15 @@ namespace BankAccount02GeneriskaKlassOchJson
 
             var IsCustomerExists = bankDB.AllCustomersDatafromBankDB.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase))!;
 
-            if (IsCustomerExists != null) 
+            if (IsCustomerExists != null)
             {
                 Console.WriteLine("The customer alredy exists. ");
-            
+
             }
 
-            Customer newCustomer = new (customerAdmin.GetAll().Count + 1, name,address)
+            Customer newCustomer = new(customerAdmin.GetAll().Count + 1, name, address)
             {
-               
+
                 AccountIDs = new List<int>()
             };
 
@@ -56,7 +52,7 @@ namespace BankAccount02GeneriskaKlassOchJson
 
 
 
-        public void AddnewAccount(BankDB bankDB) 
+        public void AddnewAccount(BankDB bankDB)
         {
 
             var accountsAdmin = new BankGeneriskAdministration<BankAccount>();
@@ -65,20 +61,20 @@ namespace BankAccount02GeneriskaKlassOchJson
             {
 
                 accountsAdmin.AddTo(a);
-            
+
             }
 
             Console.WriteLine("Enter customer ID:");
             int customerId = int.Parse(Console.ReadLine()!);
 
-            var customer = bankDB.AllCustomersDatafromBankDB.FirstOrDefault(customre  => customre.Id == customerId);
+            var customer = bankDB.AllCustomersDatafromBankDB.FirstOrDefault(customre => customre.Id == customerId);
 
-            if (customer == null) 
+            if (customer == null)
             {
 
                 Console.WriteLine("customer not found.");
                 return;
-            
+
             }
 
 
@@ -88,10 +84,10 @@ namespace BankAccount02GeneriskaKlassOchJson
 
             if (!new[] { "Saving account", "Personal account", "Investment account" }.Contains(accountType))
             {
-               
+
                 Console.WriteLine("Invalid account type");
                 return;
-            
+
             }
 
 
@@ -101,7 +97,7 @@ namespace BankAccount02GeneriskaKlassOchJson
             decimal balance = decimal.Parse(Console.ReadLine()!);
 
             BankAccount newbankAccount = new(accountsAdmin.GetAll().Count + 1, customerId, accountType, balance);
-         
+
 
 
             accountsAdmin.AddTo(newbankAccount);
@@ -113,112 +109,112 @@ namespace BankAccount02GeneriskaKlassOchJson
         }
 
 
-      
-public void UpdateCustomerDetaile(BankDB bankDB)
-    {
-        try
+
+        public void UpdateCustomerDetaile(BankDB bankDB)
         {
+            try
+            {
                 // Display ASCII art header
                 AnsiConsole.Write(new FigletText("Update Customer"));
 
                 var customerAdmin = new BankGeneriskAdministration<Customer>();
 
-            // Populate administration object with existing customers
-            foreach (var c in bankDB.AllCustomersDatafromBankDB)
-            {
-                customerAdmin.AddTo(c);
-            }
-
-            // Prompt for Customer ID
-            AnsiConsole.Markup("[bold blue]Enter customer ID to update:[/] ");
-            if (!int.TryParse(Console.ReadLine(), out int customerId) || customerId <= 0)
-            {
-                AnsiConsole.MarkupLine("[bold red]Invalid customer ID. Please try again.[/]");
-                return;
-            }
-
-            // Find the customer
-            var customer = customerAdmin.GetAll().FirstOrDefault(c => c.Id == customerId);
-            if (customer == null)
-            {
-                AnsiConsole.MarkupLine("[bold red]Customer not found.[/]");
-                return;
-            }
-
-            // Display current customer details in a styled table
-            var table = new Table();
-            table.AddColumn("[bold yellow]Customer ID[/]");
-            table.AddColumn("[bold yellow]Name[/]");
-            table.AddColumn("[bold yellow]Address[/]");
-            table.AddRow(customer.Id.ToString(), customer.Name, customer.Address);
-            AnsiConsole.Write(table);
-
-            // Update Name
-            Console.WriteLine();
-            AnsiConsole.Markup("[bold blue]Do you want to update the name? (y/n):[/] ");
-            string updateNameChoice = Console.ReadLine()!.ToLower();
-
-            if (updateNameChoice == "y")
-            {
-                AnsiConsole.Markup("[bold blue]Enter new name:[/] ");
-                string newName = Console.ReadLine()!;
-                if (!string.IsNullOrWhiteSpace(newName))
+                // Populate administration object with existing customers
+                foreach (var c in bankDB.AllCustomersDatafromBankDB)
                 {
-                    customer.Name = newName;
-                    AnsiConsole.MarkupLine("[bold green]Name updated successfully![/]");
+                    customerAdmin.AddTo(c);
                 }
-                else
+
+                // Prompt for Customer ID
+                AnsiConsole.Markup("[bold blue]Enter customer ID to update:[/] ");
+                if (!int.TryParse(Console.ReadLine(), out int customerId) || customerId <= 0)
                 {
-                    AnsiConsole.MarkupLine("[bold red]Invalid name. No changes made.[/]");
+                    AnsiConsole.MarkupLine("[bold red]Invalid customer ID. Please try again.[/]");
+                    return;
                 }
+
+                // Find the customer
+                var customer = customerAdmin.GetAll().FirstOrDefault(c => c.Id == customerId);
+                if (customer == null)
+                {
+                    AnsiConsole.MarkupLine("[bold red]Customer not found.[/]");
+                    return;
+                }
+
+                // Display current customer details in a styled table
+                var table = new Table();
+                table.AddColumn("[bold yellow]Customer ID[/]");
+                table.AddColumn("[bold yellow]Name[/]");
+                table.AddColumn("[bold yellow]Address[/]");
+                table.AddRow(customer.Id.ToString(), customer.Name, customer.Address);
+                AnsiConsole.Write(table);
+
+                // Update Name
+                Console.WriteLine();
+                AnsiConsole.Markup("[bold blue]Do you want to update the name? (y/n):[/] ");
+                string updateNameChoice = Console.ReadLine()!.ToLower();
+
+                if (updateNameChoice == "y")
+                {
+                    AnsiConsole.Markup("[bold blue]Enter new name:[/] ");
+                    string newName = Console.ReadLine()!;
+                    if (!string.IsNullOrWhiteSpace(newName))
+                    {
+                        customer.Name = newName;
+                        AnsiConsole.MarkupLine("[bold green]Name updated successfully![/]");
+                    }
+                    else
+                    {
+                        AnsiConsole.MarkupLine("[bold red]Invalid name. No changes made.[/]");
+                    }
+                }
+
+                // Update Address
+                Console.WriteLine();
+                AnsiConsole.Markup("[bold blue]Do you want to update the address? (y/n):[/] ");
+                string updateAddressChoice = Console.ReadLine()!.ToLower();
+
+                if (updateAddressChoice == "y")
+                {
+                    AnsiConsole.Markup("[bold blue]Enter new address:[/] ");
+                    string newAddress = Console.ReadLine()!;
+                    if (!string.IsNullOrWhiteSpace(newAddress))
+                    {
+                        customer.Address = newAddress;
+                        AnsiConsole.MarkupLine("[bold green]Address updated successfully![/]");
+                    }
+                    else
+                    {
+                        AnsiConsole.MarkupLine("[bold red]Invalid address. No changes made.[/]");
+                    }
+                }
+
+                // Update the database
+                customerAdmin.Updater(customer);
+                bankDB.AllCustomersDatafromBankDB = customerAdmin.GetAll();
+                SaveAllData(bankDB);
+
+                // Success message with styling
+                AnsiConsole.MarkupLine($"[bold green]Customer details updated successfully![/]");
+                var successTable = new Table();
+                successTable.AddColumn("[bold yellow]New Name[/]");
+                successTable.AddColumn("[bold yellow]New Address[/]");
+                successTable.AddRow(customer.Name, customer.Address);
+                AnsiConsole.Write(successTable);
             }
-
-            // Update Address
-            Console.WriteLine();
-            AnsiConsole.Markup("[bold blue]Do you want to update the address? (y/n):[/] ");
-            string updateAddressChoice = Console.ReadLine()!.ToLower();
-
-            if (updateAddressChoice == "y")
+            catch (FormatException ex)
             {
-                AnsiConsole.Markup("[bold blue]Enter new address:[/] ");
-                string newAddress = Console.ReadLine()!;
-                if (!string.IsNullOrWhiteSpace(newAddress))
-                {
-                    customer.Address = newAddress;
-                    AnsiConsole.MarkupLine("[bold green]Address updated successfully![/]");
-                }
-                else
-                {
-                    AnsiConsole.MarkupLine("[bold red]Invalid address. No changes made.[/]");
-                }
+                AnsiConsole.MarkupLine($"[bold red]Input format error: {ex.Message}[/]");
             }
-
-            // Update the database
-            customerAdmin.Updater(customer);
-            bankDB.AllCustomersDatafromBankDB = customerAdmin.GetAll();
-            SaveAllData(bankDB);
-
-            // Success message with styling
-            AnsiConsole.MarkupLine($"[bold green]Customer details updated successfully![/]");
-            var successTable = new Table();
-            successTable.AddColumn("[bold yellow]New Name[/]");
-            successTable.AddColumn("[bold yellow]New Address[/]");
-            successTable.AddRow(customer.Name, customer.Address);
-            AnsiConsole.Write(successTable);
+            catch (InvalidOperationException ex)
+            {
+                AnsiConsole.MarkupLine($"[bold red]Operation error: {ex.Message}[/]");
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.MarkupLine($"[bold red]An unexpected error occurred: {ex.Message}[/]");
+            }
         }
-        catch (FormatException ex)
-        {
-            AnsiConsole.MarkupLine($"[bold red]Input format error: {ex.Message}[/]");
-        }
-        catch (InvalidOperationException ex)
-        {
-            AnsiConsole.MarkupLine($"[bold red]Operation error: {ex.Message}[/]");
-        }
-        catch (Exception ex)
-        {
-            AnsiConsole.MarkupLine($"[bold red]An unexpected error occurred: {ex.Message}[/]");
-        }
-    }
 
 
         public void UpdateAccountDetaile(BankDB bankDB)
@@ -327,14 +323,60 @@ public void UpdateCustomerDetaile(BankDB bankDB)
             }
         }
 
-        public void RemoveCustomer(int customerId)
+
+
+
+        public void RemoveCustomer(BankDB bankDB)
         {
-            //logic
+            try
+            {
+                // Display ASCII art header
+                AnsiConsole.Write(new FigletText("Remove Customer"));
 
-            var customerAdmin = new BankGeneriskAdministration<Customer>();
+                var customerAdmin = new BankGeneriskAdministration<Customer>();
 
+                // Populate the administration object with existing customers
+                foreach (var customer in bankDB.AllCustomersDatafromBankDB)
+                {
+                    customerAdmin.AddTo(customer);
+                }
 
+                // Ask the user to enter the customer ID to delete
+                AnsiConsole.Markup("[bold blue]Enter the customer ID that you want to delete:[/] ");
+                if (!int.TryParse(Console.ReadLine(), out int Id) || Id <= 0)
+                {
+                    AnsiConsole.MarkupLine("[bold red]Invalid customer ID. Please try again.[/]");
+                    return;
+                }
+
+               
+
+                // Check if the customer was removed
+                var customerToRemove = customerAdmin.GetByID(Id);
+                if (customerToRemove == null)
+                {
+                    AnsiConsole.MarkupLine($"[bold red]Customer with ID {Id} not found.[/]");
+                    return;
+                   
+                }
+
+                // Use the RemoveThis method to attempt to remove the customer
+                customerAdmin.RemoveThis(Id);
+
+                // Remove the customer and update the database
+                bankDB.AllCustomersDatafromBankDB = customerAdmin.GetAll();
+                SaveAllData(bankDB);
+
+                // Success message
+                AnsiConsole.MarkupLine($"[bold green]Customer with ID {Id} removed successfully![/]");
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.MarkupLine($"[bold red]An unexpected error occurred: {ex.Message}[/]");
+            }
         }
+
+
 
 
         public void RemoveAccount(int accountId)
@@ -484,7 +526,7 @@ public void UpdateCustomerDetaile(BankDB bankDB)
 
             string updatedBankDB = JsonSerializer.Serialize(bankDB, new JsonSerializerOptions { WriteIndented = true });
 
-            
+
             File.WriteAllText(dataJsonFilePath, updatedBankDB);
 
             MirrorChangesToProjectRoot("BankAccountData.json");
