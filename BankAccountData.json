@@ -65,20 +65,6 @@
           "Type": "Withdrawal"
         }
       ]
-    },
-    {
-      "Id": 4,
-      "CustomerId": 6,
-      "AccountType": "Personal account",
-      "Balance": 14095495,
-      "Transactions": [
-        {
-          "TransactionId": 1,
-          "Amount": -500,
-          "Date": "2024-11-17T01:11:51.6100176+01:00",
-          "Type": "Withdrawal"
-        }
-      ]
     }
   ],
   "Customers": [
