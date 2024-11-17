@@ -12,7 +12,7 @@ namespace BankAccount02GeneriskaKlassOchJson
 
         public DateTime Date { get; set; }
 
-        public string Type { get; set; } // Deposit, Withdrawal, Transfer
+        public required string Type { get; set; } // Deposit, Withdrawal, Transfer
 
         
     }

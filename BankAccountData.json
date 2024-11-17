@@ -1,24 +1,4 @@
 {
-  "Customers": [
-    {
-      "Id": 101,
-      "Name": "Alice Johnson",
-      "Address": "123 Elm Street",
-      "AccountIDs": []
-    },
-    {
-      "Id": 102,
-      "Name": "Bob Smith",
-      "Address": "456 Oak Avenue",
-      "AccountIDs": []
-    },
-    {
-      "Id": 103,
-      "Name": "Charlie Brown",
-      "Address": "789 Pine Lane",
-      "AccountIDs": []
-    }
-  ],
   "Accounts": [
     {
       "Id": 1,
@@ -85,6 +65,58 @@
           "Type": "Withdrawal"
         }
       ]
+    },
+    {
+      "Id": 4,
+      "CustomerId": 6,
+      "AccountType": "Saving account",
+      "Balance": 152723,
+      "Transactions": [
+        {
+          "TransactionId": 1,
+          "Amount": -500,
+          "Date": "2024-11-17T01:11:51.6100176+01:00",
+          "Type": "Withdrawal"
+        }
+      ]
+    }
+  ],
+  "Customers": [
+    {
+      "Id": 101,
+      "Name": "Alice Johnson",
+      "Address": "123 Elm Street",
+      "AccountIDs": []
+    },
+    {
+      "Id": 102,
+      "Name": "Bob Smith",
+      "Address": "456 Oak Avenue",
+      "AccountIDs": []
+    },
+    {
+      "Id": 103,
+      "Name": "Charlie Brown",
+      "Address": "789 Pine Lane",
+      "AccountIDs": []
+    },
+    {
+      "Id": 4,
+      "Name": "Sara Soso",
+      "Address": "Askim",
+      "AccountIDs": []
+    },
+    {
+      "Id": 5,
+      "Name": "siri",
+      "Address": "abc",
+      "AccountIDs": []
+    },
+    {
+      "Id": 6,
+      "Name": "soso",
+      "Address": "aew",
+      "AccountIDs": []
     }
   ]
 }
