@@ -1,5 +1,6 @@
 ﻿
 
+using Spectre.Console;
 using System.Data;
 using System.Text.Json;
 using System.Xml.Linq;
@@ -28,12 +29,17 @@ namespace BankAccount02GeneriskaKlassOchJson
             Console.WriteLine("Enter customer address:");
             string address = Console.ReadLine()!;
 
+            var IsCustomerExists = bankDB.AllCustomersDatafromBankDB.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase))!;
 
-            Customer newCustomer = new (bankDB.AllCustomersDatafromBankDB.Count+1,name,address)
+            if (IsCustomerExists != null) 
             {
-                Id = customerAdmin.GetAll().Count + 1,
-                Name = name,
-                Address = address,
+                Console.WriteLine("The customer alredy exists. ");
+            
+            }
+
+            Customer newCustomer = new (customerAdmin.GetAll().Count + 1, name,address)
+            {
+               
                 AccountIDs = new List<int>()
             };
 
@@ -63,7 +69,7 @@ namespace BankAccount02GeneriskaKlassOchJson
             Console.WriteLine("Enter customer ID:");
             int customerId = int.Parse(Console.ReadLine()!);
 
-            var customer = bankDB.AllAccountsDatafromBankDB.FirstOrDefault(customre  => customre.Id == customerId);
+            var customer = bankDB.AllCustomersDatafromBankDB.FirstOrDefault(customre  => customre.Id == customerId);
 
             if (customer == null) 
             {
@@ -78,19 +84,22 @@ namespace BankAccount02GeneriskaKlassOchJson
 
             string accountType = Console.ReadLine()!;
 
+            if (!new[] { "Saving account", "Personal account", "Investment account" }.Contains(accountType))
+            {
+               
+                Console.WriteLine("Invalid account type");
+                return;
+            
+            }
+
+
+
             Console.WriteLine("Enter initial balance:");
 
             decimal balance = decimal.Parse(Console.ReadLine()!);
 
-            BankAccount newbankAccount = new(bankDB.AllAccountsDatafromBankDB.Count + 1, customerId, accountType, balance) 
-            { 
-            
-              Id = bankDB.AllAccountsDatafromBankDB.Count + 1,
-              CustomerId = customerId,
-              AccountType = accountType,
-              Balance = balance
-        
-            };
+            BankAccount newbankAccount = new(accountsAdmin.GetAll().Count + 1, customerId, accountType, balance);
+         
 
 
             accountsAdmin.AddTo(newbankAccount);
@@ -170,35 +179,54 @@ namespace BankAccount02GeneriskaKlassOchJson
 
         public void ViewAccountDetails(BankDB bankDB)
         {
-            Console.WriteLine("Enter account ID:");
-            int accountId = int.Parse(Console.ReadLine()!);
+            // Prompt the user for the Account ID
+            var accountId = int.Parse(AnsiConsole.Ask<string>("[green]Enter the account ID:[/]"));
 
+            // Find the account based on the provided ID
             var account = bankDB.AllAccountsDatafromBankDB.FirstOrDefault(a => a.Id == accountId);
             if (account == null)
             {
-                Console.WriteLine("Account not found.");
+                AnsiConsole.MarkupLine("[red]Account not found.[/]");
                 return;
             }
 
-            Console.WriteLine($"Account ID: {account.Id}");
-            Console.WriteLine($"Customer ID: {account.CustomerId}");
-            Console.WriteLine($"Account Type: {account.AccountType}");
-            Console.WriteLine($"Balance: {account.Balance}");
-            Console.WriteLine("Transactions:");
+            // Display account details in a structured way
+            AnsiConsole.MarkupLine($"[yellow]Account ID:[/] {account.Id}");
+            AnsiConsole.MarkupLine($"[yellow]Customer ID:[/] {account.CustomerId}");
+            AnsiConsole.MarkupLine($"[yellow]Account Type:[/] {account.AccountType}");
+            AnsiConsole.MarkupLine($"[yellow]Balance:[/] {account.Balance:C}");
+
+            // Table for transaction history
+            var transactionTable = new Table();
+            transactionTable.Border(TableBorder.Rounded);
+            transactionTable.AddColumn("[yellow]Date[/]");
+            transactionTable.AddColumn("[yellow]Transaction Type[/]");
+            transactionTable.AddColumn("[yellow]Amount[/]");
+
+            // Add each transaction as a row in the table
             foreach (var transaction in account.Transactions)
             {
-                Console.WriteLine($"  {transaction.Date}: {transaction.Type} of {transaction.Amount}");
+                transactionTable.AddRow(
+                    transaction.Date.ToShortDateString(),
+                    transaction.Type,
+                    transaction.Amount.ToString("C")
+                );
             }
 
-            SaveAllData(bankDB);
+            // Display the transactions table
+            AnsiConsole.MarkupLine("\n[yellow]Transactions:[/]");
+            AnsiConsole.Write(transactionTable);
 
+            // Save changes
+            SaveAllData(bankDB);
         }
+
+
 
 
         public void SaveAllDataandExit(BankDB bankDB)
         {
             SaveAllData(bankDB);
-            MirrorChangesToProjectRoot("BankAccountData.json");
             Console.WriteLine("Do you want to complete? (J/N)");
             string continueChoice = Console.ReadLine()!;
             if (continueChoice.ToUpper() == "N")
