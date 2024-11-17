@@ -29,3 +29,4 @@ Install dependencies using:
 ```bash
 dotnet add package Spectre.Console
 dotnet add package Figgle
+
