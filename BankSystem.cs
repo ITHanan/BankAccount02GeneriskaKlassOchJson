@@ -221,18 +221,110 @@ public void UpdateCustomerDetaile(BankDB bankDB)
     }
 
 
-
-
-
-
-
-    public void UpdateAccountDetaile(BankDB bankDB)
+        public void UpdateAccountDetaile(BankDB bankDB)
         {
-            //logic
-            var accountsAdmin = new BankGeneriskAdministration<BankAccount>();
+            try
+            {
+                // Display ASCII art header
+                AnsiConsole.Write(new FigletText("Update Account"));
 
+                var accountsAdmin = new BankGeneriskAdministration<BankAccount>();
 
+                // Populate administration object with existing accounts
+                foreach (var a in bankDB.AllAccountsDatafromBankDB)
+                {
+                    accountsAdmin.AddTo(a);
+                }
 
+                // Prompt for Account ID
+                AnsiConsole.Markup("[bold blue]Enter account ID to update:[/] ");
+                if (!int.TryParse(Console.ReadLine(), out int accountId) || accountId <= 0)
+                {
+                    AnsiConsole.MarkupLine("[bold red]Invalid account ID. Please try again.[/]");
+                    return;
+                }
+
+                // Find the account
+                var account = accountsAdmin.GetAll().FirstOrDefault(a => a.Id == accountId);
+                if (account == null)
+                {
+                    AnsiConsole.MarkupLine("[bold red]Account not found.[/]");
+                    return;
+                }
+
+                // Display current account details in a styled table
+                var table = new Table();
+                table.AddColumn("[bold yellow]Account ID[/]");
+                table.AddColumn("[bold yellow]Customer ID[/]");
+                table.AddColumn("[bold yellow]Account Type[/]");
+                table.AddColumn("[bold yellow]Balance[/]");
+                table.AddRow(account.Id.ToString(), account.CustomerId.ToString(), account.AccountType, account.Balance.ToString("C"));
+                AnsiConsole.Write(table);
+
+                // Update Account Type
+                Console.WriteLine();
+                AnsiConsole.Markup("[bold blue]Do you want to update the account type? (y/n):[/] ");
+                string updateTypeChoice = Console.ReadLine()!.ToLower();
+
+                if (updateTypeChoice == "y")
+                {
+                    AnsiConsole.Markup("[bold blue]Enter new account type:[/] ");
+                    string newType = Console.ReadLine()!;
+                    if (!string.IsNullOrWhiteSpace(newType))
+                    {
+                        account.AccountType = newType;
+                        AnsiConsole.MarkupLine("[bold green]Account type updated successfully![/]");
+                    }
+                    else
+                    {
+                        AnsiConsole.MarkupLine("[bold red]Invalid account type. No changes made.[/]");
+                    }
+                }
+
+                // Update Balance
+                Console.WriteLine();
+                AnsiConsole.Markup("[bold blue]Do you want to update the balance? (y/n):[/] ");
+                string updateBalanceChoice = Console.ReadLine()!.ToLower();
+
+                if (updateBalanceChoice == "y")
+                {
+                    AnsiConsole.Markup("[bold blue]Enter new balance:[/] ");
+                    if (decimal.TryParse(Console.ReadLine(), out decimal newBalance))
+                    {
+                        account.Balance = newBalance;
+                        AnsiConsole.MarkupLine("[bold green]Balance updated successfully![/]");
+                    }
+                    else
+                    {
+                        AnsiConsole.MarkupLine("[bold red]Invalid balance. No changes made.[/]");
+                    }
+                }
+
+                // Update the database
+                accountsAdmin.Updater(account);
+                bankDB.AllAccountsDatafromBankDB = accountsAdmin.GetAll();
+                SaveAllData(bankDB);
+
+                // Success message with styling
+                AnsiConsole.MarkupLine($"[bold green]Account details updated successfully![/]");
+                var successTable = new Table();
+                successTable.AddColumn("[bold yellow]New Account Type[/]");
+                successTable.AddColumn("[bold yellow]New Balance[/]");
+                successTable.AddRow(account.AccountType, account.Balance.ToString("C"));
+                AnsiConsole.Write(successTable);
+            }
+            catch (FormatException ex)
+            {
+                AnsiConsole.MarkupLine($"[bold red]Input format error: {ex.Message}[/]");
+            }
+            catch (InvalidOperationException ex)
+            {
+                AnsiConsole.MarkupLine($"[bold red]Operation error: {ex.Message}[/]");
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.MarkupLine($"[bold red]An unexpected error occurred: {ex.Message}[/]");
+            }
         }
 
         public void RemoveCustomer(int customerId)

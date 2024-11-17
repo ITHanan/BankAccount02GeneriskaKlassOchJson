@@ -69,8 +69,8 @@
     {
       "Id": 4,
       "CustomerId": 6,
-      "AccountType": "Saving account",
-      "Balance": 152723,
+      "AccountType": "Personal account",
+      "Balance": 14095495,
       "Transactions": [
         {
           "TransactionId": 1,
