@@ -4,6 +4,8 @@ using Spectre.Console;
 using System.Data;
 using System.Text.Json;
 using System.Xml.Linq;
+using Spectre.Console;
+using Figgle;
 
 namespace BankAccount02GeneriskaKlassOchJson
 {
@@ -109,6 +111,150 @@ namespace BankAccount02GeneriskaKlassOchJson
             Console.WriteLine($"The Account created successfully.");
 
         }
+
+
+      
+public void UpdateCustomerDetaile(BankDB bankDB)
+    {
+        try
+        {
+                // Display ASCII art header
+                AnsiConsole.Write(new FigletText("Update Customer"));
+
+                var customerAdmin = new BankGeneriskAdministration<Customer>();
+
+            // Populate administration object with existing customers
+            foreach (var c in bankDB.AllCustomersDatafromBankDB)
+            {
+                customerAdmin.AddTo(c);
+            }
+
+            // Prompt for Customer ID
+            AnsiConsole.Markup("[bold blue]Enter customer ID to update:[/] ");
+            if (!int.TryParse(Console.ReadLine(), out int customerId) || customerId <= 0)
+            {
+                AnsiConsole.MarkupLine("[bold red]Invalid customer ID. Please try again.[/]");
+                return;
+            }
+
+            // Find the customer
+            var customer = customerAdmin.GetAll().FirstOrDefault(c => c.Id == customerId);
+            if (customer == null)
+            {
+                AnsiConsole.MarkupLine("[bold red]Customer not found.[/]");
+                return;
+            }
+
+            // Display current customer details in a styled table
+            var table = new Table();
+            table.AddColumn("[bold yellow]Customer ID[/]");
+            table.AddColumn("[bold yellow]Name[/]");
+            table.AddColumn("[bold yellow]Address[/]");
+            table.AddRow(customer.Id.ToString(), customer.Name, customer.Address);
+            AnsiConsole.Write(table);
+
+            // Update Name
+            Console.WriteLine();
+            AnsiConsole.Markup("[bold blue]Do you want to update the name? (y/n):[/] ");
+            string updateNameChoice = Console.ReadLine()!.ToLower();
+
+            if (updateNameChoice == "y")
+            {
+                AnsiConsole.Markup("[bold blue]Enter new name:[/] ");
+                string newName = Console.ReadLine()!;
+                if (!string.IsNullOrWhiteSpace(newName))
+                {
+                    customer.Name = newName;
+                    AnsiConsole.MarkupLine("[bold green]Name updated successfully![/]");
+                }
+                else
+                {
+                    AnsiConsole.MarkupLine("[bold red]Invalid name. No changes made.[/]");
+                }
+            }
+
+            // Update Address
+            Console.WriteLine();
+            AnsiConsole.Markup("[bold blue]Do you want to update the address? (y/n):[/] ");
+            string updateAddressChoice = Console.ReadLine()!.ToLower();
+
+            if (updateAddressChoice == "y")
+            {
+                AnsiConsole.Markup("[bold blue]Enter new address:[/] ");
+                string newAddress = Console.ReadLine()!;
+                if (!string.IsNullOrWhiteSpace(newAddress))
+                {
+                    customer.Address = newAddress;
+                    AnsiConsole.MarkupLine("[bold green]Address updated successfully![/]");
+                }
+                else
+                {
+                    AnsiConsole.MarkupLine("[bold red]Invalid address. No changes made.[/]");
+                }
+            }
+
+            // Update the database
+            customerAdmin.Updater(customer);
+            bankDB.AllCustomersDatafromBankDB = customerAdmin.GetAll();
+            SaveAllData(bankDB);
+
+            // Success message with styling
+            AnsiConsole.MarkupLine($"[bold green]Customer details updated successfully![/]");
+            var successTable = new Table();
+            successTable.AddColumn("[bold yellow]New Name[/]");
+            successTable.AddColumn("[bold yellow]New Address[/]");
+            successTable.AddRow(customer.Name, customer.Address);
+            AnsiConsole.Write(successTable);
+        }
+        catch (FormatException ex)
+        {
+            AnsiConsole.MarkupLine($"[bold red]Input format error: {ex.Message}[/]");
+        }
+        catch (InvalidOperationException ex)
+        {
+            AnsiConsole.MarkupLine($"[bold red]Operation error: {ex.Message}[/]");
+        }
+        catch (Exception ex)
+        {
+            AnsiConsole.MarkupLine($"[bold red]An unexpected error occurred: {ex.Message}[/]");
+        }
+    }
+
+
+
+
+
+
+
+    public void UpdateAccountDetaile(BankDB bankDB)
+        {
+            //logic
+            var accountsAdmin = new BankGeneriskAdministration<BankAccount>();
+
+
+
+        }
+
+        public void RemoveCustomer(int customerId)
+        {
+            //logic
+
+            var customerAdmin = new BankGeneriskAdministration<Customer>();
+
+
+        }
+
+
+        public void RemoveAccount(int accountId)
+        {
+            //logic
+            var accountsAdmin = new BankGeneriskAdministration<BankAccount>();
+
+
+        }
+
+
+
 
         public void Deposit(BankDB bankDB)
         {
