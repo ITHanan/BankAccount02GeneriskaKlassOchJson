@@ -349,7 +349,7 @@ namespace BankAccount02GeneriskaKlassOchJson
                     return;
                 }
 
-               
+
 
                 // Check if the customer was removed
                 var customerToRemove = customerAdmin.GetByID(Id);
@@ -357,7 +357,7 @@ namespace BankAccount02GeneriskaKlassOchJson
                 {
                     AnsiConsole.MarkupLine($"[bold red]Customer with ID {Id} not found.[/]");
                     return;
-                   
+
                 }
 
                 // Use the RemoveThis method to attempt to remove the customer
@@ -377,15 +377,61 @@ namespace BankAccount02GeneriskaKlassOchJson
         }
 
 
-
-
-        public void RemoveAccount(int accountId)
+        public void RemoveAccount(BankDB bankDB)
         {
-            //logic
-            var accountsAdmin = new BankGeneriskAdministration<BankAccount>();
+            try
+            {
+                // Display ASCII art header
+                AnsiConsole.Write(new FigletText("Remove Account"));
 
+                var accountsAdmin = new BankGeneriskAdministration<BankAccount>();
 
+                // Populate the administration object with existing accounts
+                foreach (var account in bankDB.AllAccountsDatafromBankDB)
+                {
+                    accountsAdmin.AddTo(account);
+                }
+
+                // Ask the user to enter the account ID to delete
+                AnsiConsole.Markup("[bold blue]Enter the account ID that you want to delete:[/] ");
+                if (!int.TryParse(Console.ReadLine(), out int Id) || Id <= 0)
+                {
+                    AnsiConsole.MarkupLine("[bold red]Invalid account ID. Please try again.[/]");
+                    return;
+                }
+
+                // Check if the account exists
+                var accountToRemove = accountsAdmin.GetByID(Id);
+                if (accountToRemove == null)
+                {
+                    AnsiConsole.MarkupLine($"[bold red]Account with ID {Id} not found.[/]");
+                    return;
+                }
+
+                // Confirm deletion
+                var confirm = AnsiConsole.Confirm($"[bold red]Are you sure you want to delete account ID {Id}?[/]");
+                if (!confirm)
+                {
+                    AnsiConsole.MarkupLine("[bold yellow]Account deletion canceled.[/]");
+                    return;
+                }
+
+                // Use the RemoveThis method to attempt to remove the account
+                accountsAdmin.RemoveThis(Id);
+
+                // Update the bank's database with the modified account list
+                bankDB.AllAccountsDatafromBankDB = accountsAdmin.GetAll();
+                SaveAllData(bankDB);
+
+                // Success message
+                AnsiConsole.MarkupLine($"[bold green]Account with ID {Id} removed successfully![/]");
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.MarkupLine($"[bold red]An unexpected error occurred: {ex.Message}[/]");
+            }
         }
+
 
 
 

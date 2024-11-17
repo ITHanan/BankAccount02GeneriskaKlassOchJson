@@ -28,7 +28,7 @@ namespace BankAccount02GeneriskaKlassOchJson
 
             bool running = true;
 
-            
+
             while (running)
             {
                 string userChoice = DisplayMenu(); // Use the new Spectre.Console menu
@@ -37,7 +37,7 @@ namespace BankAccount02GeneriskaKlassOchJson
                 {
                     case "1. Add Customer":
                         bankSystem.AddNewCustomer(bankDB);
-                        break; 
+                        break;
                     case "2. Add Account":
                         bankSystem.AddnewAccount(bankDB);
                         break;
@@ -59,7 +59,10 @@ namespace BankAccount02GeneriskaKlassOchJson
                     case "8. Remove Customer":
                         bankSystem.RemoveCustomer(bankDB);
                         break;
-                    case "9. Save All Data and Exit":
+                    case "9. Remove Account":
+                        bankSystem.RemoveAccount(bankDB);
+                        break;
+                    case "0. Save All Data and Exit":
                         bankSystem.SaveAllDataandExit(bankDB);
                         running = false;
                         break;
@@ -87,7 +90,8 @@ namespace BankAccount02GeneriskaKlassOchJson
                         "6. Update Customer Detaile",
                         "7. Update Account Detaile",
                         "8. Remove Customer",
-                        "9. Save All Data and Exit"
+                        "9. Remove Account",
+                        "0. Save All Data and Exit"
                     }));
         }
     }
