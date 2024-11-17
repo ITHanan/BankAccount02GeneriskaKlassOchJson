@@ -37,7 +37,7 @@ namespace BankAccount02GeneriskaKlassOchJson
                 {
                     case "1. Add Customer":
                         bankSystem.AddNewCustomer(bankDB);
-                        break;
+                        break; 
                     case "2. Add Account":
                         bankSystem.AddnewAccount(bankDB);
                         break;
@@ -56,7 +56,10 @@ namespace BankAccount02GeneriskaKlassOchJson
                     case "7. Update Account Detaile":
                         bankSystem.UpdateAccountDetaile(bankDB);
                         break;
-                    case "8. Save All Data and Exit":
+                    case "8. Remove Customer":
+                        bankSystem.RemoveCustomer(bankDB);
+                        break;
+                    case "9. Save All Data and Exit":
                         bankSystem.SaveAllDataandExit(bankDB);
                         running = false;
                         break;
@@ -83,7 +86,8 @@ namespace BankAccount02GeneriskaKlassOchJson
                         "5. View Account Details",
                         "6. Update Customer Detaile",
                         "7. Update Account Detaile",
-                        "8. Save All Data and Exit"
+                        "8. Remove Customer",
+                        "9. Save All Data and Exit"
                     }));
         }
     }
