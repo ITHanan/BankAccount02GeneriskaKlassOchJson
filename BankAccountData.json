@@ -65,9 +65,42 @@
           "Type": "Withdrawal"
         }
       ]
+    },
+    {
+      "Id": 4,
+      "CustomerId": 6,
+      "AccountType": "Saving account",
+      "Balance": 3000,
+      "Transactions": []
+    },
+    {
+      "Id": 5,
+      "CustomerId": 6,
+      "AccountType": "Saving account",
+      "Balance": 4566,
+      "Transactions": []
+    },
+    {
+      "Id": 6,
+      "CustomerId": 6,
+      "AccountType": "Personal account",
+      "Balance": 1500,
+      "Transactions": []
     }
   ],
   "Customers": [
+    {
+      "Id": 101,
+      "Name": "Johnson Alice",
+      "Address": "12345 Elm Street",
+      "AccountIDs": []
+    },
+    {
+      "Id": 6,
+      "Name": "Hanan",
+      "Address": "frolonda",
+      "AccountIDs": []
+    },
     {
       "Id": 101,
       "Name": "Alice Johnson",
@@ -78,6 +111,42 @@
       "Id": 6,
       "Name": "Hanan",
       "Address": "frolonda",
+      "AccountIDs": []
+    },
+    {
+      "Id": 5,
+      "Name": "Sara",
+      "Address": "Askim",
+      "AccountIDs": []
+    },
+    {
+      "Id": 101,
+      "Name": "Johnson Alice",
+      "Address": "12345 Elm Street",
+      "AccountIDs": []
+    },
+    {
+      "Id": 6,
+      "Name": "Hanan",
+      "Address": "frolonda",
+      "AccountIDs": []
+    },
+    {
+      "Id": 101,
+      "Name": "Alice Johnson",
+      "Address": "123 Elm Street",
+      "AccountIDs": []
+    },
+    {
+      "Id": 6,
+      "Name": "Hanan",
+      "Address": "frolonda",
+      "AccountIDs": []
+    },
+    {
+      "Id": 5,
+      "Name": "Sara",
+      "Address": "Askim",
       "AccountIDs": []
     }
   ]
