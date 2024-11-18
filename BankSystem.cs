@@ -1,5 +1,6 @@
 ﻿
 
+using Figgle;
 using Spectre.Console;
 using System.Text.Json;
 
@@ -21,6 +22,8 @@ namespace BankAccount02GeneriskaKlassOchJson
                 customerAdmin.AddTo(c);
 
             }
+
+            DisplayCustomerAccount(bankDB, customerAdmin);
 
             Console.WriteLine("Enter customer name:");
             string name = Console.ReadLine()!;
@@ -49,8 +52,34 @@ namespace BankAccount02GeneriskaKlassOchJson
 
         }
 
+        private static void DisplayCustomerAccount(BankDB bankDB, BankGeneriskAdministration<Customer> customerAdmin)
+        {
+            // Display a stylish header using Figgle
+            Console.WriteLine(FiggleFonts.Standard.Render("All Customers"));
 
+            // Create a table using Spectre.Console
+            var table = new Table();
+            table.Border(TableBorder.Rounded);
+            table.AddColumn("[bold yellow]Customer ID[/]");
+            table.AddColumn("[bold green]Name[/]");
+            table.AddColumn("[bold blue]Address[/]");
+            table.AddColumn("[bold cyan]Account IDs[/]");
 
+            // Populate the table with customer details
+            foreach (var customer in bankDB.AllCustomersDatafromBankDB)
+            {
+                customerAdmin.AddTo(customer);
+                table.AddRow(
+                    customer.Id.ToString(),
+                    customer.Name,
+                    customer.Address,
+                    string.Join(", ", customer.AccountIDs) // Display account IDs as a comma-separated list
+                );
+            }
+
+            // Render the table
+            AnsiConsole.Write(table);
+        }
 
         public void AddnewAccount(BankDB bankDB)
         {
@@ -63,6 +92,8 @@ namespace BankAccount02GeneriskaKlassOchJson
                 accountsAdmin.AddTo(a);
 
             }
+
+            DisplayAvalableAccount(accountsAdmin);
 
             Console.WriteLine("Enter customer ID:");
             int customerId = int.Parse(Console.ReadLine()!);
@@ -78,17 +109,59 @@ namespace BankAccount02GeneriskaKlassOchJson
             }
 
 
-            Console.WriteLine("Enter account Type(Saving account, personale account, Investment account)");
 
-            string accountType = Console.ReadLine()!;
+            Console.WriteLine("Select the account type:");
+            Console.WriteLine("1. Saving account");
+            Console.WriteLine("2. Personal account");
+            Console.WriteLine("3. Investment account");
 
-            if (!new[] { "Saving account", "Personal account", "Investment account" }.Contains(accountType))
+            if (!int.TryParse(Console.ReadLine(), out int choice))
             {
-
-                Console.WriteLine("Invalid account type");
+                Console.WriteLine("Invalid input. Please enter a number.");
                 return;
-
             }
+
+            string accountType;
+            switch (choice)
+            {
+                case 1:
+                    accountType = "Saving account";
+                    break;
+                case 2:
+                    accountType = "Personal account";
+                    break;
+                case 3:
+                    accountType = "Investment account";
+                    break;
+                default:
+                    Console.WriteLine("Invalid choice. Please select a valid account type.");
+                    return;
+            }
+
+            Console.WriteLine($"You have selected: {accountType}");
+            // Proceed with the rest of the logic using the selected accountType
+
+
+
+
+
+
+
+
+
+
+
+            //Console.WriteLine("Enter account Type(Saving account, personale account, Investment account)");
+
+            //string accountType = Console.ReadLine()!;
+
+            //if (!new[] { "Saving account", "Personal account", "Investment account" }.Contains(accountType))
+            //{
+
+            //    Console.WriteLine("Invalid account type");
+            //    return;
+
+            //}
 
 
 
@@ -108,7 +181,34 @@ namespace BankAccount02GeneriskaKlassOchJson
 
         }
 
+        private static void DisplayAvalableAccount(BankGeneriskAdministration<BankAccount> accountsAdmin)
+        {
+            // Display the available accounts to the user
+            // Display a stylish header using Figgle
+            Console.WriteLine(FiggleFonts.Standard.Render("Available Accounts"));
 
+            // Create a table using Spectre.Console
+            var table = new Table();
+            table.Border(TableBorder.Rounded);
+            table.AddColumn("[bold yellow]ID[/]");
+            table.AddColumn("[bold green]Type[/]");
+            table.AddColumn("[bold blue]Customer ID[/]");
+            table.AddColumn("[bold cyan]Balance[/]");
+
+            // Populate the table with account details
+            foreach (var account in accountsAdmin.GetAll())
+            {
+                table.AddRow(
+                    account.Id.ToString(),
+                    account.AccountType,
+                    account.CustomerId.ToString(),
+                    account.Balance.ToString("C")
+                );
+            }
+
+            // Render the table
+            AnsiConsole.Write(table);
+        }
 
         public void UpdateCustomerDetaile(BankDB bankDB)
         {
@@ -124,6 +224,11 @@ namespace BankAccount02GeneriskaKlassOchJson
                 {
                     customerAdmin.AddTo(c);
                 }
+
+                DisplayCustomerAccount(bankDB, customerAdmin);
+
+
+
 
                 // Prompt for Customer ID
                 AnsiConsole.Markup("[bold blue]Enter customer ID to update:[/] ");
@@ -231,6 +336,9 @@ namespace BankAccount02GeneriskaKlassOchJson
                 {
                     accountsAdmin.AddTo(a);
                 }
+
+                DisplayAvalableAccount(accountsAdmin);
+
 
                 // Prompt for Account ID
                 AnsiConsole.Markup("[bold blue]Enter account ID to update:[/] ");
@@ -341,6 +449,9 @@ namespace BankAccount02GeneriskaKlassOchJson
                     customerAdmin.AddTo(customer);
                 }
 
+                DisplayCustomerAccount(bankDB, customerAdmin);
+
+
                 // Ask the user to enter the customer ID to delete
                 AnsiConsole.Markup("[bold blue]Enter the customer ID that you want to delete:[/] ");
                 if (!int.TryParse(Console.ReadLine(), out int Id) || Id <= 0)
@@ -391,6 +502,9 @@ namespace BankAccount02GeneriskaKlassOchJson
                 {
                     accountsAdmin.AddTo(account);
                 }
+
+                DisplayAvalableAccount(accountsAdmin);
+
 
                 // Ask the user to enter the account ID to delete
                 AnsiConsole.Markup("[bold blue]Enter the account ID that you want to delete:[/] ");

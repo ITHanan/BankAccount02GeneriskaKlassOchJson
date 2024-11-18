@@ -15,8 +15,8 @@ namespace BankAccount02GeneriskaKlassOchJson
             BankSystem bankSystem = new BankSystem();
 
 
-            DisplayUserBankAccountSystemInteraction dataMisalignedException = new DisplayUserBankAccountSystemInteraction();
-            dataMisalignedException.Run();
+            DisplayUserBankAccountSystemInteraction userBankAccountSystemInteraction = new DisplayUserBankAccountSystemInteraction();
+            userBankAccountSystemInteraction.Run();
         }
     }
 }
