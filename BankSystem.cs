@@ -619,6 +619,16 @@ namespace BankAccount02GeneriskaKlassOchJson
 
         public void ViewAccountDetails(BankDB bankDB)
         {
+
+            var accountsAdmin = new BankGeneriskAdministration<BankAccount>();
+
+            // Populate administration object with existing accounts
+            foreach (var a in bankDB.AllAccountsDatafromBankDB)
+            {
+                accountsAdmin.AddTo(a);
+            }
+
+            DisplayAvalableAccount(accountsAdmin);
             // Prompt the user for the Account ID
             var accountId = int.Parse(AnsiConsole.Ask<string>("[green]Enter the account ID:[/]"));
 
