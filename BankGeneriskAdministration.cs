@@ -30,7 +30,7 @@ namespace BankAccount02GeneriskaKlassOchJson
             var TheExistinItem = GetByID(updatedList.Id);
             if (TheExistinItem != null) 
             {
-                int index = _items.IndexOf(updatedList);
+                int index = _items.IndexOf(TheExistinItem);
                 _items[index]= updatedList; 
             }
         }
